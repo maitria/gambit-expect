@@ -1,0 +1,28 @@
+#!/bin/sh
+
+output_file=/tmp/expect-tests.$$.txt
+failed=no
+
+for test in tests/*.scm
+do
+	printf '%s... ' "$test"
+	result_file=`printf '%s' "$test" |sed -e 's/\.scm$/.txt/'`
+
+	gsi $test > "$output_file"
+	if diff -u "$result_file" "$output_file"
+	then 
+		printf 'OK\n'
+	else
+		failed=yes
+		printf 'FAILED\n'
+	fi
+
+done
+
+rm -f "$output_file"
+
+if [ x$failed = xyes ]
+then
+	exit 1
+fi
+
