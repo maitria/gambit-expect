@@ -1,27 +1,30 @@
 #!/bin/sh
 
-output_file=/tmp/expect-tests.$$.txt
+output_filename=/tmp/expect-tests.$$.txt
 failed=no
 
-for test in tests/*.scm
+for testfile in tests/*.scm
 do
-	printf '%s... ' "$test"
-	result_file=`printf '%s' "$test" |sed -e 's/\.scm$/.txt/'`
+	#print the testfile's name with some ellipses
+	printf '%s... ' $testfile
+	#find the name of the matching .txt results file 
+	expected_results_filename=`printf '%s' $testfile |sed -e 's/\.scm$/.txt/'`
 
-	gsi $test > "$output_file"
-	if diff -u "$result_file" "$output_file"
+	#run the test file and put the shit in the output file
+	gsi $testfile > $output_filename
+	#see if there's any difference between the expected results and the output
+	if diff -u $expected_results_filename $output_filename
 	then 
 		printf 'OK\n'
 	else
 		failed=yes
 		printf 'FAILED\n'
 	fi
-
 done
 
-rm -f "$output_file"
-
-if [ x$failed = xyes ]
+rm -f $output_filename
+   
+if [ "$failed" = yes ]
 then
 	exit 1
 fi
