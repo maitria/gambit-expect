@@ -1,7 +1,3 @@
-;; we made manual unit tests. it worked.
-;; hoping we can see all the testfiles in the tests directory
-;; ' is quote, always literal. ` is quasi-quote, evaluate , things inside.
-
 (define-macro (assert condition)
   `(if ,condition 
     (display ".")
@@ -9,6 +5,9 @@
   )
 
 (define (get-all-the-tests)
+  (get-everything))
+
+(define (get-everything)
   (read-all (open-directory "tests/")))
 
 (define (expected-results-filename test-filename)
