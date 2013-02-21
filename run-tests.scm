@@ -1,11 +1,12 @@
 (define (get-tests-from list-of-files)
+  (collect-tests-from list-of-files))
+
+(define (collect-tests-from files)
   (define test-files '())
-  (let loop ((remaining-files list-of-files))
-    (if (have-any? remaining-files)
-      (let ((this-file (car remaining-files)))
-	(if (is-a-test? this-file) 
-	  (set! test-files (cons this-file test-files)))
-        (loop (cdr remaining-files)))))
+  (define (pick-out-test-files file)
+    (if is-a-test? files 
+      (set! test-files (cons file test-files))))
+  (for-each pick-out-test-files files)
   test-files)
 
 (define (get-all-the-tests)
