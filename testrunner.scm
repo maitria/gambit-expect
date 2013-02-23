@@ -28,11 +28,15 @@
 
 (define (filename-with-expected-output-for test-filename)
   (define truncated-filename (substring test-filename 0 (- (string-length test-filename) 3)))
-  (string-append truncated-filename "txt"))
+  (string-append truncated-filename "output"))
 
-(assert (string=? (filename-with-expected-output-for "tests/no-tests.scm") "tests/no-tests.txt"))
+;; filename for expected output is the same but ends in output
+(assert (string=? (filename-with-expected-output-for "tests/no-tests.scm") "tests/no-tests.output"))
+;; get-all-the-tests is a list
 (assert (list? (get-all-the-tests)))
-(assert (not (member "no-tests.txt" (get-all-the-tests))))
+;; get-all-the-tests doesn't return files ending in output
+(assert (not (member "no-tests.output" (get-all-the-tests))))
+
 
 (newline)
 (display "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
