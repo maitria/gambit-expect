@@ -19,7 +19,7 @@
   (not (null? stuff)))
 
 (define (get-everything)
-  (read-all (open-directory "tests/")))
+  (read-all (open-directory "test/")))
 
 (define-macro (assert condition)
   `(if ,condition 
