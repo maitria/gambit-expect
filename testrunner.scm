@@ -44,21 +44,17 @@
       (else captured-lines))))
 
 (define (string-contains? haystack needle)
-  (define text-found? #f)
-  (define (inspect letter)
-    (let the-word ((index 0)) 
-      (define (potential-hit)
-        (substring haystack index (+ index (string-length needle))))
-      (cond
-        ((> index (- (string-length haystack) (string-length needle)))
-            #f)
-        ((string=? (potential-hit) needle)
-          (set! text-found? #t))  
-        (else 
-          (the-word (+ index 1))
-        ))))
-  (for-each inspect (string->list haystack))
- text-found?) 
+  (let dig-through ((start 0)) 
+    (define (potential-hit)
+      (substring haystack start (+ start (string-length needle))))
+    (cond
+      ((> start (- (string-length haystack) (string-length needle)))
+        #f)
+      ((string=? (potential-hit) needle)
+        #t)  
+      (else 
+        (dig-through (+ start 1))
+      ))))
 
 ;; filename for expected output is the same but ends in output
 (assert (string=? (filename-with-expected-output-for "tests/no-tests.scm") "tests/no-tests.output"))
