@@ -47,13 +47,14 @@
   (let dig-through ((start 0)) 
     (define (potential-hit)
       (substring haystack start (+ start (string-length needle))))
+    (define gone-too-far? 
+      (> start (- (string-length haystack) (string-length needle))))
+    (define (found-it?) 
+      (string=? (potential-hit) needle)) 
     (cond
-      ((> start (- (string-length haystack) (string-length needle)))
-        #f)
-      ((string=? (potential-hit) needle)
-        #t)  
-      (else 
-        (dig-through (+ start 1))
+      (gone-too-far? #f)
+      ((found-it?) #t)  
+      (else (dig-through (+ start 1))
       ))))
 
 ;; filename for expected output is the same but ends in output
