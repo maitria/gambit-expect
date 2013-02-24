@@ -31,7 +31,17 @@
   (string-append truncated-filename "output"))
 
 (define (captured-output command)
-  "florbtestflorbflorb")
+  (with-input-from-process command read-all-the-lines))
+ 
+(define (read-all-the-lines)
+  (define captured-lines "")
+  (let read-a-line ()
+    (define this-line (read-line))
+    (cond 
+      ((not (eof-object? this-line))
+        (set! captured-lines (string-append captured-lines this-line))
+        (read-a-line))
+      (else captured-lines))))
 
 (define (string-contains? haystack needle)
   (define text-found? #f)
@@ -50,7 +60,6 @@
   (for-each inspect (string->list haystack))
  text-found?) 
 
-
 ;; filename for expected output is the same but ends in output
 (assert (string=? (filename-with-expected-output-for "tests/no-tests.scm") "tests/no-tests.output"))
 ;; get-all-the-tests is a list
@@ -61,6 +70,7 @@
 (assert (string? (captured-output "ls")))
 ;; captured output for ls contains 'test'
 (assert (string-contains? (captured-output "ls") "test"))
+(assert (not (string-contains? (captured-output "ls") "florb")))
 
 (newline)
 (display "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
