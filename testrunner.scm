@@ -1,4 +1,5 @@
 (load "utilities.scm")
+(include "assert.scm")
 
 (define (get-tests-from list-of-files)
   (collect-tests-from list-of-files))
@@ -17,16 +18,8 @@
 (define (is-a-test? filename)
   (string=? "scm" (substring filename (- (string-length filename) 3) (string-length filename))))
 
-(define (have-any? stuff)
-  (not (null? stuff)))
-
 (define (get-everything)
   (read-all (open-directory "test/")))
-
-(define-macro (assert condition)
-  `(if ,condition 
-    (display ".")
-    (display "F")))
 
 (define (filename-with-expected-output-for test-filename)
   (define truncated-filename (substring test-filename 0 (- (string-length test-filename) 3)))
@@ -34,7 +27,10 @@
 
 (define (captured-output-for command)
   (with-input-from-process command read-all-the-lines))
- 
+
+(newline)
+(display "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+(newline)
 
 ;; filename for expected output is the same but ends in output
 (assert (string=? (filename-with-expected-output-for "tests/no-tests.scm") "tests/no-tests.output"))
