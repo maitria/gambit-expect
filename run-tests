@@ -1,0 +1,17 @@
+#!/bin/sh
+
+failures=no
+for test in test/test-*.scm; do
+	gsi "$test"
+	if [[ $? -ne 0 ]]
+	then
+		failures=yes
+	fi
+done
+
+if [[ x$failures = xno ]]
+then
+	echo 'All tests passed.'
+else
+	exit 1
+fi

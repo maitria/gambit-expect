@@ -1,0 +1,5 @@
+(include "lib.scm")
+
+(expect-file
+  containing-code: '((include "../lib/expect.scm"))
+  to-match: "")
