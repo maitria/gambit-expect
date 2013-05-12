@@ -22,7 +22,7 @@
          (display "F"))
        (display "."))))
 
-(define (expect:display-one-failure test-condition)
+(define (expect:display-failure test-condition)
   (display "FAILED: ")
   (write test-condition)
   (newline))
@@ -42,7 +42,7 @@
      (if (> expect:*failure-count* 0)
        (begin
          (newline)
-         (for-each expect:display-one-failure expect:*failures*))))))
+         (for-each expect:display-failure expect:*failures*))))))
 
 (define (expect:override-exit-to-display-results)
   (let ((default-exit ##exit))
