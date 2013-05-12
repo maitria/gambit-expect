@@ -5,7 +5,7 @@
 		     (expect (= 3 4))
 		     (expect "this test should pass" (= 0 0))
 		     (expect "this test should pass" (= 0 0))
-                     (expect "this test shoudl fail" (= 1 5)))
+                     (expect "this test should fail" (= 1 5)))
   to-match: #<<EOF
 F..F
 

@@ -22,13 +22,13 @@
          (display "F"))
        (display "."))))
 
-(define (expect:display-failed-test) 
+(define (expect:display-one-failure test-condition)
   (display "FAILED: ")
-  (write (car expect:*failures*))
-  (newline)
-  (display "FAILED: ")
-  (write (car(cdr expect:*failures*)))
+  (write test-condition)
   (newline))
+
+(define (expect:display-failed-test) 
+  (for-each expect:display-one-failure expect:*failures*))
 
 (define (expect:display-results)
   (cond
