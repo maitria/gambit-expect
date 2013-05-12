@@ -16,8 +16,8 @@
 
   (define (message)
     (if (includes-failure-message?)
-      (string-append (car args) " ")
-      ""))
+      (car args)
+      #f))
 
   `(begin
      (set! expect:*example-count* (+ 1 expect:*example-count*))
@@ -29,7 +29,10 @@
 
 (define (expect:display-failure failure)
   (display "FAILED: ")
-  (display (expect-failure-message failure))
+  (if (expect-failure-message failure)
+    (begin
+      (display (expect-failure-message failure))
+      (display " ")))
   (write (expect-failure-test-condition failure))
   (newline))
 
