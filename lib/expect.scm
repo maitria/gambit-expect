@@ -30,7 +30,12 @@
      (display " examples, ")
      (display expect:*failure-count*)
      (display " failures")
-     (newline))))
+     (newline)
+     (if (> expect:*failure-count* 0)
+       (begin
+         (newline)
+         (display "FAILED: (= 3 4)")
+         (newline))))))
 
 (define (expect:override-exit-to-display-results)
   (let ((default-exit ##exit))

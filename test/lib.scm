@@ -26,8 +26,9 @@
        (delete-file *temporary-scheme-file*)
        (if (not (string=? actual-output ,to-match))
 	 (error (string-append
-		  "Got bad output.\n ----- EXPECTED -----\n"
+		  "Got bad output.\n"
+                  "----- EXPECTED -----\n"
 		  ,to-match
-		  "\n ----- GOT -----\n"
+                  "-------- GOT -------\n"
 		  actual-output
-		  "\n"))))))
+                  "===================\n"))))))
