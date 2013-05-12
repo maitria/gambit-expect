@@ -1,5 +1,7 @@
 (define expect:*example-count* 0)
 (define expect:*failures* '())
+(define-type expect-failure
+  (test-condition read-only:))
 
 (define-macro (expect . args)
 
@@ -14,15 +16,14 @@
   `(begin
      (set! expect:*example-count* (+ 1 expect:*example-count*))
      (if (not ,(test-condition))
-       (begin
-         (set! expect:*failures* 
-           (append expect:*failures* (list ',(test-condition))))
+       (let ((failure (make-expect-failure ',(test-condition))))
+         (set! expect:*failures* (append expect:*failures* (list failure)))
          (display "F"))
        (display "."))))
 
-(define (expect:display-failure test-condition)
+(define (expect:display-failure failure)
   (display "FAILED: ")
-  (write test-condition)
+  (write (expect-failure-test-condition failure))
   (newline))
 
 (define (expect:display-results)
