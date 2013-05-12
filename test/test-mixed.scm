@@ -12,7 +12,7 @@ F..F
 4 examples, 2 failures
 
 FAILED: (= 3 4)
-FAILED: (= 1 5)
+FAILED: this test should fail (= 1 5)
 
 EOF
 )
