@@ -1,12 +1,13 @@
 (define expect:*example-count* 0)
 (define expect:*failures* '())
+
 (define-type expect-failure
-  (test-condition read-only:)
+  (condition read-only:)
   (message read-only:))
 
 (define-macro (expect . args)
 
-  (define test-condition #f)
+  (define condition #f)
   (define message #f)
 
   (define includes-failure-message?
@@ -15,14 +16,14 @@
   (cond
     (includes-failure-message?
      (set! message (car args))
-     (set! test-condition (cadr args)))
+     (set! condition (cadr args)))
     (else
-     (set! test-condition (car args))))
+     (set! condition (car args))))
   
   `(begin
      (set! expect:*example-count* (+ 1 expect:*example-count*))
-     (if (not ,test-condition)
-       (let ((failure (make-expect-failure ',test-condition ',message)))
+     (if (not ,condition)
+       (let ((failure (make-expect-failure ',condition ',message)))
          (set! expect:*failures* (append expect:*failures* (list failure)))
          (display "F"))
        (display "."))))
@@ -33,7 +34,7 @@
     (begin
       (display (expect-failure-message failure))
       (display " ")))
-  (write (expect-failure-test-condition failure))
+  (write (expect-failure-condition failure))
   (newline))
 
 (define (expect:display-results)
