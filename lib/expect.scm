@@ -6,23 +6,23 @@
 
 (define-macro (expect . args)
 
-  (define (includes-failure-message?)
+  (define test-condition #f)
+  (define message #f)
+
+  (define includes-failure-message?
     (= 2 (length args)))
+
+  (cond
+    (includes-failure-message?
+     (set! message (car args))
+     (set! test-condition (cadr args)))
+    (else
+     (set! test-condition (car args))))
   
-  (define (test-condition)
-    (if (includes-failure-message?)
-      (cadr args)
-      (car args)))
-
-  (define (message)
-    (if (includes-failure-message?)
-      (car args)
-      #f))
-
   `(begin
      (set! expect:*example-count* (+ 1 expect:*example-count*))
-     (if (not ,(test-condition))
-       (let ((failure (make-expect-failure ',(test-condition) ',(message))))
+     (if (not ,test-condition)
+       (let ((failure (make-expect-failure ',test-condition ',message)))
          (set! expect:*failures* (append expect:*failures* (list failure)))
          (display "F"))
        (display "."))))
