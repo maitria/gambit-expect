@@ -1,5 +1,4 @@
 (define expect:*example-count* 0)
-(define expect:*failure-count* 0)
 (define expect:*failures* '())
 
 (define-macro (expect . args)
@@ -18,7 +17,6 @@
        (begin
          (set! expect:*failures* 
            (append expect:*failures* (list ',(test-condition))))
-	 (set! expect:*failure-count* (+ 1 expect:*failure-count*))
          (display "F"))
        (display "."))))
 
@@ -36,10 +34,10 @@
      (newline)
      (display expect:*example-count*)
      (display " examples, ")
-     (display expect:*failure-count*)
+     (display (length expect:*failures*))
      (display " failures")
      (newline)
-     (if (> expect:*failure-count* 0)
+     (if (> (length expect:*failures*) 0)
        (begin
          (newline)
          (for-each expect:display-failure expect:*failures*))))))
