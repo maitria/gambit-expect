@@ -1,5 +1,6 @@
 (define expect:*example-count* 0)
 (define expect:*failure-count* 0)
+(define expect:*failures* '())
 
 (define-macro (expect . args)
 
@@ -15,9 +16,19 @@
      (set! expect:*example-count* (+ 1 expect:*example-count*))
      (if (not ,(test-condition))
        (begin
+         (set! expect:*failures* 
+           (append expect:*failures* (list ',(test-condition))))
 	 (set! expect:*failure-count* (+ 1 expect:*failure-count*))
          (display "F"))
        (display "."))))
+
+(define (expect:display-failed-test) 
+  (display "FAILED: ")
+  (write (car expect:*failures*))
+  (newline)
+  (display "FAILED: ")
+  (write (car(cdr expect:*failures*)))
+  (newline))
 
 (define (expect:display-results)
   (cond
@@ -34,8 +45,8 @@
      (if (> expect:*failure-count* 0)
        (begin
          (newline)
-         (display "FAILED: (= 3 4)")
-         (newline))))))
+         (expect:display-failed-test))
+         ))))
 
 (define (expect:override-exit-to-display-results)
   (let ((default-exit ##exit))

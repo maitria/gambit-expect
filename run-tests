@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo ""
+echo "============= BEGIN TEST RESULTS =============" 
+echo ""
+
 failures=no
 for test in test/test-*.scm; do
 	gsi "$test"
