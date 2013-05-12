@@ -30,7 +30,7 @@
 (define (expect:display-failure failure)
   (display "FAILED: ")
   (display (expect-failure-message failure))
-  (display (expect-failure-test-condition failure))
+  (write (expect-failure-test-condition failure))
   (newline))
 
 (define (expect:display-results)
