@@ -53,10 +53,15 @@
          (newline)
          (for-each expect:display-failure expect:*failures*))))))
 
+(define (expect:new-exit-code original-exit-code)
+  (if (zero? original-exit-code)
+    (min 127 (length expect:*failures*))
+    original-exit-code))
+
 (define (expect:override-exit-to-display-results)
   (let ((default-exit ##exit))
     (set! ##exit (lambda (#!optional (exit-code 0))
                    (expect:display-results)
-                   (default-exit exit-code)))))
+                   (default-exit (expect:new-exit-code exit-code))))))
 
 (expect:override-exit-to-display-results)
