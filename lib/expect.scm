@@ -6,7 +6,6 @@
   (message read-only:))
 
 (define-macro (expect . args)
-
   (define condition #f)
   (define message #f)
 
@@ -19,7 +18,7 @@
      (set! condition (cadr args)))
     (else
      (set! condition (car args))))
-  
+
   `(begin
      (set! expect:*example-count* (+ 1 expect:*example-count*))
      (if (not ,condition)
@@ -57,7 +56,7 @@
 (define (expect:override-exit-to-display-results)
   (let ((default-exit ##exit))
     (set! ##exit (lambda (#!optional (exit-code 0))
-                       (expect:display-results)
-                       (default-exit exit-code)))))
-  
+                   (expect:display-results)
+                   (default-exit exit-code)))))
+
 (expect:override-exit-to-display-results)
