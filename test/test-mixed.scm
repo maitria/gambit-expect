@@ -17,4 +17,5 @@ FAILED: this test should fail (= 1 5)
 FAILED: (string=? "hello" "goodbye")
 
 EOF
+  exits-with: 3
 )

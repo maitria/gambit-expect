@@ -12,4 +12,5 @@
 4 examples, 0 failures
 
 EOF
+  exits-with: 0
 )
